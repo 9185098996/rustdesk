@@ -199,7 +199,11 @@ jobs:
           popd
           mkdir -p ./SignOutput
           mv ./target/release/rustdesk-portable-packer.exe ./SignOutput/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
-
+       - uses: actions/upload-artifact@v4 
+          with:
+            name: rustdesk-${{ env.VERSION }}
+            path: ./SignOutput/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
+    
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
 
@@ -219,13 +223,9 @@ jobs:
         run: |
           BASE_URL=${{ secrets.SIGN_BASE_URL }} SECRET_KEY=${{ secrets.SIGN_SECRET_KEY }} python3 res/job.py sign_files ./SignOutput
 
-      - name: Publish Release
-        if: env.UPLOAD_ARTIFACT == 'true'
-        uses: actions/upload-artifact@master
-        with:
-          name: rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
-          path: rustdesk
-
+      #- name: Publish Release
+      #  if: env.UPLOAD_ARTIFACT == 'true'
+      #  uses: actions/upload-artifact@master
         # with:
           # prerelease: true
           # tag_name: ${{ env.TAG_NAME }}
