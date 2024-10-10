@@ -200,7 +200,7 @@ jobs:
           mkdir -p ./SignOutput
           mv ./target/release/rustdesk-portable-packer.exe ./SignOutput/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
           
-      - name: Upload
+      - name: Upload packet
         if: env.UPLOAD_ARTIFACT == 'true'
         uses: actions/upload-artifact@master
           with:
