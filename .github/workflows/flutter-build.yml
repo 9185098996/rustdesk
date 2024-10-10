@@ -191,6 +191,7 @@ jobs:
       - name: Build self-extracted executable
         shell: bash
         if: env.UPLOAD_ARTIFACT == 'true'
+        uses: actions/upload-artifact@master
         run: |
           sed -i '/dpiAware/d' res/manifest.xml
           pushd ./libs/portable
@@ -199,6 +200,9 @@ jobs:
           popd
           mkdir -p ./SignOutput
           mv ./target/release/rustdesk-portable-packer.exe ./SignOutput/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
+        with:
+          name: rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
+          path: rustdesk
 
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
